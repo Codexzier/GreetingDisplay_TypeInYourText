@@ -1,0 +1,21 @@
+﻿@page "/Catfact"
+@inject HttpClient Http
+
+<h3>Catfact</h3>
+
+@CatfactResult.fact
+
+@code {
+    private CatfactResultItem CatfactResult;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.CatfactResult = await Http.GetFromJsonAsync<CatfactResultItem>("https://catfact.ninja/fact");
+    }
+
+    public class CatfactResultItem
+    {
+        public string fact { get; set; }
+        public int length { get; set; }
+    }
+}

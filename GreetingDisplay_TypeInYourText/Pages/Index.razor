@@ -1,7 +1,37 @@
 ﻿@page "/"
+@using System.Diagnostics
+@inject HttpClient Http
 
 <PageTitle>Index</PageTitle>
 
 <h1>Greeting Display</h1>
 
 Enter your greetings here
+
+<div>
+
+    <input type="text" @bind="greeting" />
+    <button type="submit" @onclick="SendGreating">Test</button>
+
+</div>
+
+
+
+@code {
+    private string greeting = "Hallo Leute, wie ist die Stimmung!";
+
+    private async Task SendGreating()
+    {
+        var item = new GreetingItem();
+        item.message = greeting;
+
+        Debug.WriteLine($"Message: {item.message}");
+
+        HttpResponseMessage response = await Http.PostAsJsonAsync("api/greeting", item);
+    }
+
+    public class GreetingItem
+    {
+        public string message { get; set; }
+    }
+}
